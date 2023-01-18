@@ -1,10 +1,11 @@
 import Product from './Product';
+import './ItemList.css'
 
 const ItemList = ({products}) => {
   return (
-    <section className='productlist'>
+    <div className='productlist'>
             {products.map((product) => <Product key={product.id} {...product} />)}
-    </section>
+    </div>
   );
 }
 
