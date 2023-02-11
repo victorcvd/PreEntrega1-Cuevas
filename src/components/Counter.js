@@ -1,7 +1,9 @@
 import {useState} from 'react'
 import './Counter.css'
+import { useCart } from '../context/CartContext';
 
-function Counter() {
+function Counter({id, name, price}) {
+  const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   const counterIncrement = () => {
@@ -18,6 +20,7 @@ function Counter() {
   }
 
   const addProductToCart = (quantity) => {
+    addItem({id:id, name: name, price:price, quantity:quantity})
     alert('Se agregaron '+quantity+' artículos al carro')
   }
 

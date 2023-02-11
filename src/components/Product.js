@@ -3,7 +3,9 @@ import {Link} from 'react-router-dom';
 import './Product.css'
 
 const Product = ({id, img, name, price, category}) => {
-
+  function numberWithPoints(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
   return (
     <div className='product'>
       <div className='product-top'>
@@ -12,7 +14,7 @@ const Product = ({id, img, name, price, category}) => {
       <div className='product-bottom'>
         <p className='product-text-category'>{category}</p>
         <p className='product-text-name'>{name}</p>
-        <p className='product-text-price'>{price}</p>
+        <p className='product-text-price'>${numberWithPoints(price)}</p>
         <Link to={`/item/${id}`} className='product-button'>Más detalles</Link>
       </div>
     </div>

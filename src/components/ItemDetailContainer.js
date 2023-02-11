@@ -16,8 +16,8 @@ const ItemListContainer = () => {
     setLoading(true)
 
     getProductById(productId).then(products => {
-      setProduct(products[0])
-      console.log(products[0])
+      setProduct(products)
+      console.log(products)
     }).finally(() => {
       setLoading(false)
     })

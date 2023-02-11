@@ -1,3 +1,17 @@
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import {
+    getDocs,
+    query,
+    collection,
+    where,
+    getDoc,
+    doc,
+    addDoc,
+    deleteDoc,
+    updateDoc
+} from 'firebase/firestore';
+
 const products = [
     { 
         id: '1', 
@@ -18,28 +32,45 @@ const products = [
     { id: '9', name: 'Regadera metal', price: '$10.000', category: 'herramientas', img:'https://aukinkochile.com/web/wp-content/uploads/2022/06/06-7767_REGADERA.jpg', stock: 10, description:'Regadera jardín acero inoxidable'}
 ];
 
-export const getProducts = () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(products)
-        }, 500)
-    })
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD3qMtnBwqWaYlqKokyBxuKItbOdxBoIgI",
+  authDomain: "vc-coderhouse.firebaseapp.com",
+  projectId: "vc-coderhouse",
+  storageBucket: "vc-coderhouse.appspot.com",
+  messagingSenderId: "456934124577",
+  appId: "1:456934124577:web:90c364937a3e996ebb4760"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+export async function getProducts() {
+  const documents = [];
+  const snapshot = await getDocs(collection(db, "items"));;
+  snapshot.forEach((doc) => {
+    documents.push({ id: doc.id, ...doc.data()});
+  });
+  return documents;
 }
 
-export const getProductsByCategory = (category) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const productsByCategory = products.filter( (product) => product.category === category)
-            resolve(productsByCategory)
-        }, 500)
-    })
+export async function getProductsByCategory(category) {
+  const documents = [];
+  const q = query(collection(db, "items"), where("category", "==", category));
+  const snapshot = await getDocs(q);
+  snapshot.forEach((doc) => {
+    documents.push({ id: doc.id, ...doc.data()});
+  });
+  return documents;
 }
 
-export const getProductById = (id) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const productById = products.filter( (product) => product.id === id)
-            resolve(productById)
-        }, 500)
-    })
+
+export async function getProductById(id) {
+  console.log(id)
+  const docRef = doc(db, "items", id);
+  const docSnap = await getDoc(docRef);
+  const document = { id: docSnap.id, ...docSnap.data()}
+  console.log(document)
+  return document;
 }
